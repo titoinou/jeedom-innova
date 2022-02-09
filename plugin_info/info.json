@@ -12,10 +12,8 @@
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
 	"changelog" : "https://jeedom.github.io/plugin-template/#language#/changelog",
-	"documentation" : "https://jeedom.github.io/plugin-template/#language#/"
-	"language": [
-		"fr_FR"
-	],
+	"documentation" : "https://jeedom.github.io/plugin-template/#language#/",
+	"language": "fr_FR",
 	"compatibility": [
 		"miniplus",
 		"smart",

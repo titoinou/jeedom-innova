@@ -514,7 +514,7 @@ class innova extends eqLogic {
             return;
         }
         $info = json_decode($json_string, true);
-    	log::add('innova', 'debug', $info);
+    	log::add('innova', 'debug', 'test');
 	}
 
 	public function updateInfos() {

@@ -635,6 +635,53 @@ class innovaCmd extends cmd {
 
   // Exécution d'une commande
   public function execute($_options = array()) {
+  	$eqLogic = $this->getEqLogic(); // Récupération de l’eqlogic
+	switch ($this->getLogicalId()) {                
+		case 'refresh': 
+			$eqLogic->updateInfos();
+			break;
+		/*case 'setPowerState':
+			$eqLogic->setPowerState($_options['state']);
+			break;*/
+		case 'on':
+			$eqLogic->allumer();
+			break;
+		case 'off':
+			$eqLogic->eteindre();
+			break;
+		case 'setEcomode':
+			$eqLogic->setEcomode();
+			break;
+		case 'setTurbomode':
+			$eqLogic->setTurbomode();
+			break;
+		case 'setNormalmode':
+			$eqLogic->setNormalmode();
+			break;
+		case 'setTemperature':
+			$temp = isset($_options['text']) ? $_options['text'] : $_options['slider'];
+			$eqLogic->setTemperature($temp);
+			break;
+		case 'setMode':
+			$eqLogic->setMode($_options['select']);
+			break;
+		case 'setFanspeed':
+			$eqLogic->setFanspeed($_options['select']);
+			break;
+		case 'setSwingmode':
+			$eqLogic->setSwingmode($_options['select']);
+			break;
+		case 'bipsOn':
+			$eqLogic->bipsOn();
+			break;
+		case 'bipsOff':
+			$eqLogic->bipsOff();
+			break;          
+		default:
+			throw new Error('This should not append!');
+			log::add('mideawifi', 'warn', 'Error while executing cmd ' . $this->getLogicalId());
+			break;
+	}
   }
 
   /*     * **********************Getteur Setteur*************************** */

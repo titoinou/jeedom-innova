@@ -472,7 +472,8 @@ class innova extends eqLogic {
 		self::_sendCmdToAC("set/setpoint","target_temperature",$consigne);
 	}
 
-	public function setMode($mode = 0) {
+	public function setMode($mode) {
+		log::add("innova", "debug", "Mode ".$mode." sélectionné");
 		if(!in_array($mode, ["heating", "cooling", "dehumidification", "fanonly", "auto"]))
 			return;
 

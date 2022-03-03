@@ -413,8 +413,8 @@ class innova extends eqLogic {
 		}
 		log::add('innova', 'debug', $json_string);
 		$infos = json_decode($json_string, true);
-	return $infos['RESULT'];
-}
+		return $infos['RESULT'];
+	}
 
 	public function updateInfos() {
 		$infos = self::getInfos();
@@ -441,7 +441,10 @@ class innova extends eqLogic {
 			$extraData = "--data 'p_temp=".$state."'";
 		}
 		if($variable == "swing_mode"){
-			$extraData = "Content-Length=".$state."'";
+			$extraData = "value=".$state."'";
+		}
+		if($variable == "fan_speed"){
+			$extraData = "value=".$state."'";
 		}
 		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" '.$extraData.' -X POST '.$baseUrl.$param);
 		if ($json_string === false) {
@@ -501,7 +504,7 @@ class innova extends eqLogic {
 			$modeName="auto";
 			break;
 				
-			case default:
+			default:
 			$modeName="heating";
 			break;
 		}
@@ -528,10 +531,7 @@ class innova extends eqLogic {
 			$modeName="Low";
 			break;
 		}
-		self::_sendCmdToAC("--fan_speed $speed");
-
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("fan_speed", $speed);
+		self::_sendCmdToAC("set/fan","fan_speed",$speed);
 	}
 
 	public function setSwingmode($swing = "7") {

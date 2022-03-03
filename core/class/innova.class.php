@@ -509,27 +509,26 @@ class innova extends eqLogic {
 	$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" -X POST http://innovaenergie.cloud/api/v/1/status');
         if ($json_string === false) {
             log::add('innova', 'debug', 'Problème de lecture status');
-            $request_http->setNoReportError(false);
-            $json_string = $request_http->exec(30,1);
             return;
         }
-        $info = json_decode($json_string, true);
-    	log::add('innova', 'debug', 'test');
+    	log::add('innova', 'debug', $json_string);
+        return json_decode($json_string, true);
 	}
 
 	public function updateInfos() {
 		$infos = self::getInfos();
-		self::_updateInfos($infos);
+		log::add('innova', 'debug', $infos["sp"]);
+		//self::_updateInfos($infos);
 	}
 
 	private function _updateInfos($infos) {
-		$this->checkAndUpdateCmd("power_state", 		$infos["power_state"]);
-		$this->checkAndUpdateCmd("power_tone", 			$infos["power_tone"]);
-		$this->checkAndUpdateCmd("target_temperature", 	$infos["target_temperature"]);
-		$this->checkAndUpdateCmd("operational_mode", 	$infos["operational_mode"]);
-		$this->checkAndUpdateCmd("fan_speed", 			$infos["fan_speed"]);
-		$this->checkAndUpdateCmd("swing_mode", 			$infos["swing_mode"]);
-		$this->checkAndUpdateCmd("eco_mode", 			$infos["night_mode"]);
+		$this->checkAndUpdateCmd("power_state", $infos["power_state"]);
+		$this->checkAndUpdateCmd("power_tone", 	$infos["power_tone"]);
+		$this->checkAndUpdateCmd("target_temperature", $infos["target_temperature"]);
+		$this->checkAndUpdateCmd("operational_mode", $infos["operational_mode"]);
+		$this->checkAndUpdateCmd("fan_speed", $infos["fan_speed"]);
+		$this->checkAndUpdateCmd("swing_mode", $infos["swing_mode"]);
+		$this->checkAndUpdateCmd("eco_mode", $infos["night_mode"]);
 		$this->checkAndUpdateCmd("indoor_temperature", 	$infos["indoor_temperature"]);
 		$this->checkAndUpdateCmd("outdoor_temperature", $infos["outdoor_temperature"]); 
 	}

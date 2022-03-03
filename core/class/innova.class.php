@@ -208,244 +208,244 @@ class innova extends eqLogic {
 	$info->setUnite('°C');
 	$info->setDisplay('forceReturnLineBefore', true);
 	$info->save();
-*/
-		// ================================================================================================================= //
-		// ==================================================== ACTIONS ==================================================== //
-		// ================================================================================================================= //
+	  
+	// ================================================================================================================= //
+	// ==================================================== ACTIONS ==================================================== //
+	// ================================================================================================================= //
 
-		// @DEVHELP https://github.com/jeedom/core/blob/06fb34c895b420630bfa9d9317547088b13f81d7/core/config/jeedom.config.php
+	// @DEVHELP https://github.com/jeedom/core/blob/06fb34c895b420630bfa9d9317547088b13f81d7/core/config/jeedom.config.php
 
-		// Allumage/Extinction clim
-		/*$cmd = $this->getCmd('action', 'setPowerState');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Etat', __FILE__));
-		}
-		$cmd->setOrder(1);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setPowerState');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setValue($infoState->getId());
-		$cmd->setTemplate('dashboard', 'mideawifi::powerState'); //template pour le dashboard
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();*/
+	// Allumage/Extinction clim
+	/*$cmd = $this->getCmd('action', 'setPowerState');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Etat', __FILE__));
+	}
+	$cmd->setOrder(1);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setPowerState');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setValue($infoState->getId());
+	$cmd->setTemplate('dashboard', 'mideawifi::powerState'); //template pour le dashboard
+	$cmd->setDisplay('forceReturnLineBefore', true);
+	$cmd->save();*/
 /*
-      	$cmd = $this->getCmd('action', 'on');
-		if (!is_object($cmd)) {
+$cmd = $this->getCmd('action', 'on');
+	if (!is_object($cmd)) {
+	$cmd = new innovaCmd();
+	$cmd->setName(__('Allumer', __FILE__));
+	}
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('on');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setDisplay('generic_type', 'ENERGY_ON');
+	$info->setDisplay('forceReturnLineBefore', true);
+	//$info->setDisplay('forceReturnLineAfter', true);
+	$cmd->save();
+
+	// Extinction clim
+	$cmd = $this->getCmd('action', 'off');
+	if (!is_object($cmd)) {
+	$cmd = new innovaCmd();
+	$cmd->setName(__('Eteindre', __FILE__));
+	}
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('off');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setDisplay('generic_type', 'ENERGY_OFF');
+	//$info->setDisplay('forceReturnLineBefore', true);
+	$info->setDisplay('forceReturnLineAfter', true);
+	$cmd->save();
+
+	// Changement température de consigne
+	$cmd = $this->getCmd('action', 'setTemperature');
+	if (!is_object($cmd)) {
 		$cmd = new innovaCmd();
-		$cmd->setName(__('Allumer', __FILE__));
-		}
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('on');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('generic_type', 'ENERGY_ON');
-		$info->setDisplay('forceReturnLineBefore', true);
-		//$info->setDisplay('forceReturnLineAfter', true);
-		$cmd->save();
-      
-		// Extinction clim
-		$cmd = $this->getCmd('action', 'off');
-		if (!is_object($cmd)) {
+		$cmd->setName(__('Température de consigne', __FILE__));
+	}
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setTemperature');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('slider');
+	$cmd->setConfiguration('minValue', 16);
+	$cmd->setConfiguration('maxValue', 30);
+	$cmd->setUnite('°C');
+	$cmd->setValue($infoTemp->getId());
+	if(version_compare(jeedom::version(), "4", "<")) {
+		$cmd->setTemplate('dashboard', 'setTemperature');
+		$cmd->setTemplate('mobile', 'setTemperature');
+	} else {
+		$cmd->setTemplate('dashboard', 'mideawifi::setTemperature');
+		$cmd->setTemplate('mobile', 'mideawifi::setTemperature');
+	}
+	$cmd->setDisplay('forceReturnLineBefore', true);
+	$cmd->save();
+
+	// Changement du mode
+	$cmd = $this->getCmd('action', 'setMode');
+	if (!is_object($cmd)) {
 		$cmd = new innovaCmd();
-		$cmd->setName(__('Eteindre', __FILE__));
-		}
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('off');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('generic_type', 'ENERGY_OFF');
-		//$info->setDisplay('forceReturnLineBefore', true);
-		$info->setDisplay('forceReturnLineAfter', true);
-		$cmd->save();
+		$cmd->setName(__('Mode', __FILE__));
+	}           
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setMode');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('select');
+	$cmd->setValue($infoMode->getId());
+	$cmd->setConfiguration('listValue', "auto|auto;cool|climatisation;dry|déshumidificateur;heat|Chauffage;fan_only|Ventilation");
+	$cmd->setTemplate('dashboard', 'mideawifi::tmplSelect');
+	$cmd->setDisplay('forceReturnLineBefore', true);
+	$cmd->save();
 
-		// Changement température de consigne
-		$cmd = $this->getCmd('action', 'setTemperature');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Température de consigne', __FILE__));
-		}
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setTemperature');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('slider');
-		$cmd->setConfiguration('minValue', 16);
-		$cmd->setConfiguration('maxValue', 30);
-		$cmd->setUnite('°C');
-		$cmd->setValue($infoTemp->getId());
-      		if(version_compare(jeedom::version(), "4", "<")) {
-			$cmd->setTemplate('dashboard', 'setTemperature');
-          		$cmd->setTemplate('mobile', 'setTemperature');
-        	} else {
-			$cmd->setTemplate('dashboard', 'mideawifi::setTemperature');
-	          	$cmd->setTemplate('mobile', 'mideawifi::setTemperature');
-        	}
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();
+	// Changement de l'orientation de la ventilation
+	log::add('mideawifi', 'debug', '===== Save Swingmode =====');
+	$cmd = $this->getCmd('action', 'setSwingmode');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Type de ventilation', __FILE__));
+	}           
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setSwingmode');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('select');
+	// MAJ de l'énumeration des orientations par rapport à la configuration choisie
+	$currentSwingmodes = $this->getConfiguration('swingmode');
+	log::add('mideawifi', 'debug', 'swingMode sélectionné = ' . $currentSwingmodes);
+	if($currentSwingmodes == "Vertical") {
+		$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical");
+	} elseif ($currentSwingmodes == "Horizontal") {
+		$cmd->setConfiguration('listValue', "Off|Eteint;Horizontal|Horizontal");
+	} else {
+		$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical;Horizontal|Horizontal;Both|Les deux");
+	}
+	// on met à jour la commande info avec la configuration (choix le plus logique) choisie
+	$this->checkAndUpdateCmd("swing_mode", $currentSwingmodes);
+	$cmd->setValue($infoSwingmode->getId());
+	$cmd->setTemplate('dashboard','mideawifi::tmplSelect');
+	$cmd->setDisplay('forceReturnLineBefore', true);
+	$cmd->save();
 
-		// Changement du mode
-		$cmd = $this->getCmd('action', 'setMode');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Mode', __FILE__));
-		}           
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setMode');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('select');
-		$cmd->setValue($infoMode->getId());
-		$cmd->setConfiguration('listValue', "auto|auto;cool|climatisation;dry|déshumidificateur;heat|Chauffage;fan_only|Ventilation");
-		$cmd->setTemplate('dashboard', 'mideawifi::tmplSelect');
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();
+	// Changement de la vitesse de ventilation
+	$cmd = $this->getCmd('action', 'setFanspeed');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Vitesse de ventilation', __FILE__));
+	}         
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setFanspeed');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('select');
+	$cmd->setValue($infoSpeedfan->getId());
+	$cmd->setConfiguration('listValue', "Auto|Automatique;High|Rapide;Medium|Moyenne;Low|Lente;Silent|Silencieuse");
+	$cmd->setTemplate('dashboard', 'mideawifi::tmplSelect');
+	$cmd->setDisplay('forceReturnLineBefore', true);
+	$cmd->save();
 
-		// Changement de l'orientation de la ventilation
-		log::add('mideawifi', 'debug', '===== Save Swingmode =====');
-		$cmd = $this->getCmd('action', 'setSwingmode');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Type de ventilation', __FILE__));
-		}           
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setSwingmode');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('select');
-		// MAJ de l'énumeration des orientations par rapport à la configuration choisie
-		$currentSwingmodes = $this->getConfiguration('swingmode');
-		log::add('mideawifi', 'debug', 'swingMode sélectionné = ' . $currentSwingmodes);
-		if($currentSwingmodes == "Vertical") {
-			$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical");
-		} elseif ($currentSwingmodes == "Horizontal") {
-			$cmd->setConfiguration('listValue', "Off|Eteint;Horizontal|Horizontal");
-		} else {
-			$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical;Horizontal|Horizontal;Both|Les deux");
-		}
-		// on met à jour la commande info avec la configuration (choix le plus logique) choisie
-		$this->checkAndUpdateCmd("swing_mode", $currentSwingmodes);
-		$cmd->setValue($infoSwingmode->getId());
-		$cmd->setTemplate('dashboard','mideawifi::tmplSelect');
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();
+	// Mise en route du mode Eco
+	$cmd = $this->getCmd('action', 'setEcomode');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Eco', __FILE__));
+	}
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setEcomode');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setDisplay('forceReturnLineBefore', true);
+	$cmd->save();
 
-		// Changement de la vitesse de ventilation
-		$cmd = $this->getCmd('action', 'setFanspeed');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Vitesse de ventilation', __FILE__));
-		}         
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setFanspeed');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('select');
-		$cmd->setValue($infoSpeedfan->getId());
-		$cmd->setConfiguration('listValue', "Auto|Automatique;High|Rapide;Medium|Moyenne;Low|Lente;Silent|Silencieuse");
-		$cmd->setTemplate('dashboard', 'mideawifi::tmplSelect');
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();
+	// Mise en route du mode Turbo
+	$cmd = $this->getCmd('action', 'setTurbomode');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Turbo', __FILE__));
+	}
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setTurbomode');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setDisplay('forceReturnLineBefore', false);
+	$cmd->save();
 
-		// Mise en route du mode Eco
-		$cmd = $this->getCmd('action', 'setEcomode');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Eco', __FILE__));
-		}
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setEcomode');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();
+	// Désactivation des modes turbo/eco
+	$cmd = $this->getCmd('action', 'setNormalmode');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Normal', __FILE__));
+	}         
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('setNormalmode');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setDisplay('forceReturnLineBefore', false);
+	$cmd->setDisplay('forceReturnLineAfter', true);
+	$cmd->save();
 
-		// Mise en route du mode Turbo
-		$cmd = $this->getCmd('action', 'setTurbomode');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Turbo', __FILE__));
-		}
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setTurbomode');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', false);
-		$cmd->save();
+	// activation des bips
+	$cmd = $this->getCmd('action', 'bipsOn');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Bips ON', __FILE__));
+	}         
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('bipsOn');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setDisplay('forceReturnLineBefore', true);
+	$cmd->save();
 
-		// Désactivation des modes turbo/eco
-		$cmd = $this->getCmd('action', 'setNormalmode');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Normal', __FILE__));
-		}         
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setNormalmode');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', false);
-		$cmd->setDisplay('forceReturnLineAfter', true);
-		$cmd->save();
+	// Désactivation des bips
+	$cmd = $this->getCmd('action', 'bipsOff');
+	if (!is_object($cmd)) {
+		$cmd = new innovaCmd();
+		$cmd->setName(__('Bips OFF', __FILE__));
+	}         
+	$cmd->setOrder($order++);
+	$cmd->setIsVisible(1);
+	$cmd->setLogicalId('bipsOff');
+	$cmd->setEqLogic_id($this->getId());
+	$cmd->setType('action');
+	$cmd->setSubType('other');
+	$cmd->setDisplay('forceReturnLineBefore', false);
+	$cmd->save();
+	// rafraichir
+	$refresh = $this->getCmd(null, 'refresh');
+	if (!is_object($refresh)) {
+		$refresh = new innovaCmd();
+		$refresh->setName(__('Rafraichir', __FILE__));
+	}
+	$refresh->setEqLogic_id($this->getId());
+	$refresh->setLogicalId('refresh');
+	$refresh->setType('action');
+	$refresh->setSubType('other');
+	$refresh->save();
 
-		// activation des bips
-		$cmd = $this->getCmd('action', 'bipsOn');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Bips ON', __FILE__));
-		}         
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('bipsOn');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();
-
-		// Désactivation des bips
-		$cmd = $this->getCmd('action', 'bipsOff');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Bips OFF', __FILE__));
-		}         
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('bipsOff');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', false);
-		$cmd->save();
-		// rafraichir
-		$refresh = $this->getCmd(null, 'refresh');
-		if (!is_object($refresh)) {
-			$refresh = new innovaCmd();
-			$refresh->setName(__('Rafraichir', __FILE__));
-		}
-		$refresh->setEqLogic_id($this->getId());
-		$refresh->setLogicalId('refresh');
-		$refresh->setType('action');
-		$refresh->setSubType('other');
-		$refresh->save();
-
-		// à la fin, on contact directement léquipement pour récupérer les infos courantes
-		//$this->updateInfos();*/
+	// à la fin, on contact directement léquipement pour récupérer les infos courantes
+	//$this->updateInfos();*/
   }
 
   // Fonction exécutée automatiquement avant la suppression de l'équipement

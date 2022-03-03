@@ -300,7 +300,6 @@ class innova extends eqLogic {
 		$cmd->save();
 
 		// Changement de l'orientation de la ventilation
-		log::add('mideawifi', 'debug', '===== Save Swingmode =====');
 		$cmd = $this->getCmd('action', 'setSwingmode');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
@@ -336,16 +335,29 @@ class innova extends eqLogic {
 		$cmd = $this->getCmd('action', 'setNightmode');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
-			$cmd->setName(__('Mode Nuit', __FILE__));
+			$cmd->setName(__('Activer Mode Nuit', __FILE__));
 		}
 		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setNightmode');
+		$cmd->setLogicalId('enableNightmode');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('other');
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
-
+		
+		$cmd = $this->getCmd('action', 'disableNightmode');
+		if (!is_object($cmd)) {
+			$cmd = new innovaCmd();
+			$cmd->setName(__('Désactiver Mode Nuit', __FILE__));
+		}
+		$cmd->setIsVisible(1);
+		$cmd->setLogicalId('disableNightmode');
+		$cmd->setEqLogic_id($this->getId());
+		$cmd->setType('action');
+		$cmd->setSubType('other');
+		$cmd->setDisplay('forceReturnLineBefore', true);
+		$cmd->save();  
+		  
 		// Désactivation des modes turbo/eco
 		/*$cmd = $this->getCmd('action', 'setNormalmode');
 		if (!is_object($cmd)) {

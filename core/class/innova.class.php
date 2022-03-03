@@ -295,7 +295,7 @@ class innova extends eqLogic {
 		$cmd->setType('action');
 		$cmd->setSubType('select');
 		$cmd->setValue($infoMode->getId());
-		$cmd->setConfiguration('listValue', "auto|auto;cool|climatisation;dry|déshumidificateur;heat|Chauffage;fan_only|Ventilation");
+		$cmd->setConfiguration('listValue', "auto|auto;cooling|climatisation;dehumidification|déshumidificateur;heating|Chauffage;fanonly|Ventilation");
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 

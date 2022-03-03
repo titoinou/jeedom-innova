@@ -513,13 +513,12 @@ class innova extends eqLogic {
             $json_string = $request_http->exec(30,1);
             return;
         }
-    	log::add('innova', 'debug', $json_string);
         $info = json_decode($json_string, true);
+    	log::add('innova', 'debug', $info);
 	}
 
 	public function updateInfos() {
 		$infos = self::getInfos();
-
 		self::_updateInfos($infos);
 	}
 
@@ -530,8 +529,7 @@ class innova extends eqLogic {
 		$this->checkAndUpdateCmd("operational_mode", 	$infos["operational_mode"]);
 		$this->checkAndUpdateCmd("fan_speed", 			$infos["fan_speed"]);
 		$this->checkAndUpdateCmd("swing_mode", 			$infos["swing_mode"]);
-		$this->checkAndUpdateCmd("eco_mode", 			$infos["eco_mode"]);
-		$this->checkAndUpdateCmd("turbo_mode", 			$infos["turbo_mode"]);
+		$this->checkAndUpdateCmd("eco_mode", 			$infos["night_mode"]);
 		$this->checkAndUpdateCmd("indoor_temperature", 	$infos["indoor_temperature"]);
 		$this->checkAndUpdateCmd("outdoor_temperature", $infos["outdoor_temperature"]); 
 	}

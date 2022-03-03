@@ -36,21 +36,21 @@ class innova extends eqLogic {
   /*     * ***********************Methode static*************************** */
 
   /*
-  * Fonction exécutée automatiquement toutes les minutes par Jeedom
-  public static function cron() {}
-  */
-
-  
-  //Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
-  public static function cron5() {
-    foreach (self::byType('innova') as $eqLogicInnova) {
-      if($eqLogicInnova->getIsEnable() == 1){
-        $eqLogicInnova->updateInfos();
-      }
-      log::add('mideawifi', 'debug', 'update clim ' . $eqLogicMideawifi->getName());
+  //Fonction exécutée automatiquement toutes les minutes par Jeedom
+  public static function cron() {
+  	foreach (self::byType('innova') as $eqLogicInnova) {
+		if($eqLogicInnova->getIsEnable() == 1){
+			$eqLogicInnova->getInfos();
 		}
+		log::add('mideawifi', 'debug', 'update clim ' . $eqLogicMideawifi->getName());
+	}
   }
 
+  
+  /*Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
+  public static function cron5() {}
+  */
+	
   /*
   * Fonction exécutée automatiquement toutes les 10 minutes par Jeedom
   public static function cron10() {}
@@ -109,7 +109,7 @@ class innova extends eqLogic {
 		// etat alimentation
 		$infoState = $this->getCmd(null, 'power_state');
 		if (!is_object($infoState)) {
-			$infoState = new mideawifiCmd();
+			$infoState = new innovaCmd();
 			$infoState->setName(__('Etat courant', __FILE__));
 		}
 		$infoState->setOrder($order++);
@@ -123,27 +123,10 @@ class innova extends eqLogic {
 		$infoState->setDisplay('forceReturnLineBefore', false);
 		$infoState->save();
 
-		// bips de changement
-		$info = $this->getCmd(null, 'prompt_tone');
-		if (!is_object($info)) {
-			$info = new mideawifiCmd();
-			$info->setName(__('prompt_tone', __FILE__));
-		}
-		$info->setOrder($order++);
-		$info->setLogicalId('prompt_tone');
-		$info->setEqLogic_id($this->getId());
-		$info->setType('info');
-		$info->setTemplate('dashboard', 'default'); //template pour le dashboard
-		$info->setSubType('binary');
-		$info->setIsVisible(0);
-		$info->setIsHistorized(0);
-		$info->setDisplay('forceReturnLineBefore', false);
-		$info->save();
-
 		// température désirée
 		$infoTemp = $this->getCmd(null, 'target_temperature');
 		if (!is_object($infoTemp)) {
-			$infoTemp = new mideawifiCmd();
+			$infoTemp = new innovaCmd();
 			$infoTemp->setName(__('Température désirée', __FILE__));
 		}
 		$infoTemp->setOrder($order++);
@@ -162,7 +145,7 @@ class innova extends eqLogic {
 		// vitesse ventilateur
 		$infoSpeedfan = $this->getCmd(null, 'fan_speed');
 		if (!is_object($infoSpeedfan)) {
-			$infoSpeedfan = new mideawifiCmd();
+			$infoSpeedfan = new innovaCmd();
 			$infoSpeedfan->setName(__('Vitesse', __FILE__));
 		}
 		$infoSpeedfan->setOrder($order++);
@@ -177,7 +160,7 @@ class innova extends eqLogic {
 		// Mode de ventilation
 		$infoSwingmode = $this->getCmd(null, 'swing_mode');
 		if (!is_object($infoSwingmode)) {
-			$infoSwingmode = new mideawifiCmd();
+			$infoSwingmode = new innovaCmd();
 			$infoSwingmode->setName(__('Direction', __FILE__));
 		}
 		$infoSwingmode->setOrder($order++);
@@ -186,13 +169,13 @@ class innova extends eqLogic {
 		$infoSwingmode->setType('info');
 		$infoSwingmode->setSubType('string');
 		$infoSwingmode->setIsVisible(0);
-      	$infoSwingmode->setDisplay('forceReturnLineBefore', false);
+      		$infoSwingmode->setDisplay('forceReturnLineBefore', false);
 		$infoSwingmode->save();
 
-		// Mode éco
-		$info = $this->getCmd(null, 'eco_mode');
+		// Mode Nuit
+		$info = $this->getCmd(null, 'night_mode');
 		if (!is_object($info)) {
-			$info = new mideawifiCmd();
+			$info = new innovaCmd();
 			$info->setName(__('Mode éco', __FILE__));
 		}
 		$info->setOrder($order++);
@@ -206,27 +189,10 @@ class innova extends eqLogic {
 		$info->setDisplay('forceReturnLineBefore', false);
 		$info->save();
 
-		// Mode Turbo
-		$info = $this->getCmd(null, 'turbo_mode');
-		if (!is_object($info)) {
-			$info = new mideawifiCmd();
-			$info->setName(__('Mode turbo', __FILE__));
-		}
-		$info->setOrder($order++);
-		$info->setLogicalId('turbo_mode');
-		$info->setEqLogic_id($this->getId());
-		$info->setType('info');
-		$info->setTemplate('dashboard', 'default'); //template pour le dashboard
-		$info->setSubType('binary');
-		$info->setIsVisible(1);
-		$info->setIsHistorized(0);
-		$info->setDisplay('forceReturnLineBefore', false);
-		$info->save();
-
 		// mode opérationnel
 		$infoMode = $this->getCmd(null, 'operational_mode');
 		if (!is_object($infoMode)) {
-			$infoMode = new mideawifiCmd();
+			$infoMode = new innovaCmd();
 			$infoMode->setName(__('Mode courant', __FILE__));
 		}
 		$infoMode->setOrder($order++);
@@ -247,7 +213,7 @@ class innova extends eqLogic {
 		// température intérieure
 		$info = $this->getCmd(null, 'indoor_temperature');
 		if (!is_object($info)) {
-			$info = new mideawifiCmd();
+			$info = new innovaCmd();
 			$info->setName(__('Température intérieure', __FILE__));
 		}
 		$info->setOrder($order++);
@@ -262,25 +228,6 @@ class innova extends eqLogic {
 		$info->setDisplay('forceReturnLineBefore', true);
 		$info->save();
 
-		// température extérieure
-		$info = $this->getCmd(null, 'outdoor_temperature');
-		if (!is_object($info)) {
-			$info = new mideawifiCmd();
-			$info->setName(__('Température extérieure', __FILE__));
-		}
-		$info->setOrder($order++);
-		$info->setLogicalId('outdoor_temperature');
-		$info->setEqLogic_id($this->getId());
-		$info->setType('info');
-		$info->setTemplate('dashboard', 'default'); //template pour le dashboard
-		$info->setSubType('string');
-		$info->setIsVisible(1);
-		$info->setIsHistorized(1);
-		$info->setUnite('°C'); 
-		$info->setDisplay('forceReturnLineBefore', true);
-		$info->setDisplay('forceReturnLineAfter', true);
-		$info->save();
-
 		// ================================================================================================================= //
 		// ==================================================== ACTIONS ==================================================== //
 		// ================================================================================================================= //
@@ -290,7 +237,7 @@ class innova extends eqLogic {
 		// Allumage/Extinction clim
 		/*$cmd = $this->getCmd('action', 'setPowerState');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Etat', __FILE__));
 		}
 		$cmd->setOrder(1);
@@ -306,7 +253,7 @@ class innova extends eqLogic {
 
       	$cmd = $this->getCmd('action', 'on');
 		if (!is_object($cmd)) {
-		$cmd = new mideawifiCmd();
+		$cmd = new innovaCmd();
 		$cmd->setName(__('Allumer', __FILE__));
 		}
 		$cmd->setOrder($order++);
@@ -323,7 +270,7 @@ class innova extends eqLogic {
 		// Extinction clim
 		$cmd = $this->getCmd('action', 'off');
 		if (!is_object($cmd)) {
-		$cmd = new mideawifiCmd();
+		$cmd = new innovaCmd();
 		$cmd->setName(__('Eteindre', __FILE__));
 		}
 		$cmd->setOrder($order++);
@@ -340,7 +287,7 @@ class innova extends eqLogic {
 		// Changement température de consigne
 		$cmd = $this->getCmd('action', 'setTemperature');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Température de consigne', __FILE__));
 		}
 		$cmd->setOrder($order++);
@@ -366,7 +313,7 @@ class innova extends eqLogic {
 		// Changement du mode
 		$cmd = $this->getCmd('action', 'setMode');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Mode', __FILE__));
 		}           
 		$cmd->setOrder($order++);
@@ -385,7 +332,7 @@ class innova extends eqLogic {
 		log::add('mideawifi', 'debug', '===== Save Swingmode =====');
 		$cmd = $this->getCmd('action', 'setSwingmode');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Type de ventilation', __FILE__));
 		}           
 		$cmd->setOrder($order++);
@@ -414,7 +361,7 @@ class innova extends eqLogic {
 		// Changement de la vitesse de ventilation
 		$cmd = $this->getCmd('action', 'setFanspeed');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Vitesse de ventilation', __FILE__));
 		}         
 		$cmd->setOrder($order++);
@@ -432,7 +379,7 @@ class innova extends eqLogic {
 		// Mise en route du mode Eco
 		$cmd = $this->getCmd('action', 'setEcomode');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Eco', __FILE__));
 		}
 		$cmd->setOrder($order++);
@@ -447,7 +394,7 @@ class innova extends eqLogic {
 		// Mise en route du mode Turbo
 		$cmd = $this->getCmd('action', 'setTurbomode');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Turbo', __FILE__));
 		}
 		$cmd->setOrder($order++);
@@ -462,7 +409,7 @@ class innova extends eqLogic {
 		// Désactivation des modes turbo/eco
 		$cmd = $this->getCmd('action', 'setNormalmode');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Normal', __FILE__));
 		}         
 		$cmd->setOrder($order++);
@@ -478,7 +425,7 @@ class innova extends eqLogic {
 		// activation des bips
 		$cmd = $this->getCmd('action', 'bipsOn');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Bips ON', __FILE__));
 		}         
 		$cmd->setOrder($order++);
@@ -493,7 +440,7 @@ class innova extends eqLogic {
 		// Désactivation des bips
 		$cmd = $this->getCmd('action', 'bipsOff');
 		if (!is_object($cmd)) {
-			$cmd = new mideawifiCmd();
+			$cmd = new innovaCmd();
 			$cmd->setName(__('Bips OFF', __FILE__));
 		}         
 		$cmd->setOrder($order++);
@@ -507,7 +454,7 @@ class innova extends eqLogic {
 		// rafraichir
 		$refresh = $this->getCmd(null, 'refresh');
 		if (!is_object($refresh)) {
-			$refresh = new mideawifiCmd();
+			$refresh = new innovaCmd();
 			$refresh->setName(__('Rafraichir', __FILE__));
 		}
 		$refresh->setEqLogic_id($this->getId());
@@ -558,22 +505,18 @@ class innova extends eqLogic {
 
   /*     * **********************Getteur Setteur*************************** */
   public function getInfos() {
-		// 2 trames dexemple
-		$ip = $this->getConfiguration('ip');
-		$id = $this->getConfiguration('id');
-      	$port = $this->getConfiguration('port');
-		$get = shell_exec("python3 " . __DIR__ . "/../../resources/get.py $ip $id $port 2>&1");
-
-		$formattedGet = strtolower(preg_replace("/<(?:.*)([0-9]+)>/mU", "$1", $get, -1)); // fix json format
-		//$formattedGet = preg_replace("/: ,/", ": false,", $formattedGet, -1); // fix json empty value for swingmode
-		$formattedGet = preg_replace("/'/", "\"", $formattedGet, -1); // simple to double quotes
-
-		log::add('mideawifi', 'debug', 'Get Infos = ' . $formattedGet);
-
-		$infos = json_decode($formattedGet, true);
-
-		return $infos;
-
+	$serial = $this->getConfiguration('serial');
+	$id = $this->getConfiguration('id');
+	$uid = $this->getConfiguration('uid');
+	$json_string = shell_exec('curl -X POST -H "X-serial .$serial -H "X-UID .$uid -H "X-Requested-With: XMLHttpRequest" -X POST http://innovaenergie.cloud/api/v/1/status');
+        if ($json_string === false) {
+            log::add('innova', 'debug', 'Problème de lecture status');
+            $request_http->setNoReportError(false);
+            $json_string = $request_http->exec(30,1);
+            return;
+        }
+    	log::add('innova', 'debug', $json_string);
+        $info = json_decode($json_string, true);
 	}
 
 	public function updateInfos() {

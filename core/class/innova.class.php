@@ -126,7 +126,7 @@ class innova extends eqLogic {
 		$infoTemp->setType('info');
 		$infoTemp->setTemplate('dashboard', 'tile'); //template pour le dashboard
 		$infoTemp->setSubType('string');
-		$infoTemp->setIsVisible(0);
+		$infoTemp->setIsVisible(1);
 		$infoTemp->setUnite('°C');
 		//$infoTemp->setDisplay('generic_type', 'TEMPERATURE');
 		$infoTemp->setDisplay('forceReturnLineBefore', false);
@@ -142,7 +142,7 @@ class innova extends eqLogic {
 		$infoSpeedfan->setEqLogic_id($this->getId());
 		$infoSpeedfan->setType('info');
 		$infoSpeedfan->setSubType('string');
-		$infoSpeedfan->setIsVisible(0);
+		$infoSpeedfan->setIsVisible(1);
 		$infoSpeedfan->setDisplay('forceReturnLineBefore', false);
 		$infoSpeedfan->save();
 
@@ -156,7 +156,7 @@ class innova extends eqLogic {
 		$infoSwingmode->setEqLogic_id($this->getId());
 		$infoSwingmode->setType('info');
 		$infoSwingmode->setSubType('string');
-		$infoSwingmode->setIsVisible(0);
+		$infoSwingmode->setIsVisible(1);
 		$infoSwingmode->setDisplay('forceReturnLineBefore', false);
 		$infoSwingmode->save();
 
@@ -171,7 +171,7 @@ class innova extends eqLogic {
 		$info->setType('info');
 		$info->setTemplate('dashboard', 'default'); //template pour le dashboard
 		$info->setSubType('binary');
-		$info->setIsVisible(1);
+		$info->setIsVisible(0);
 		$info->setIsHistorized(0);
 		$info->setDisplay('forceReturnLineBefore', false);
 		$info->save();
@@ -186,7 +186,7 @@ class innova extends eqLogic {
 		$infoMode->setEqLogic_id($this->getId());
 		$infoMode->setType('info');
 		$infoMode->setSubType('string');
-		$infoMode->setIsVisible(0);
+		$infoMode->setIsVisible(1);
 		//$infoMode->setDisplay('generic_type', 'MODE_STATE');
 		$infoMode->setDisplay('forceReturnLineBefore', true);
 		$infoMode->save();
@@ -337,7 +337,7 @@ class innova extends eqLogic {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Activer Mode Nuit', __FILE__));
 		}
-		$cmd->setIsVisible(1);
+		$cmd->setIsVisible(0);
 		$cmd->setLogicalId('enableNightmode');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
@@ -350,32 +350,15 @@ class innova extends eqLogic {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Désactiver Mode Nuit', __FILE__));
 		}
-		$cmd->setIsVisible(1);
+		$cmd->setIsVisible(0);
 		$cmd->setLogicalId('disableNightmode');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('other');
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();  
-		  
-		// Désactivation des modes turbo/eco
-		/*$cmd = $this->getCmd('action', 'setNormalmode');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Normal', __FILE__));
-		}         
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setNormalmode');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', false);
-		$cmd->setDisplay('forceReturnLineAfter', true);
-		$cmd->save();*/
-
 		// à la fin, on contacte directement léquipement pour récupérer les infos courantes
-		//$this->updateInfos();
+		$this->updateInfos();
 	  }
 
 	  // Fonction exécutée automatiquement avant la suppression de l'équipement
@@ -588,9 +571,6 @@ class innovaCmd extends cmd {
 			break;
 		case 'setNightmode':
 			$eqLogic->setNightmode();
-			break;
-		case 'setNormalmode':
-			$eqLogic->setNormalmode();
 			break;
 		case 'setTemperature':
 			$temp = isset($_options['text']) ? $_options['text'] : $_options['slider'];

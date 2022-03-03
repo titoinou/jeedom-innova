@@ -311,7 +311,7 @@ class innova extends eqLogic {
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('select');
-		$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical;Horizontal|Horizontal;Both|Les deux");
+		$cmd->setConfiguration('listValue', "7|Désactivé;0|Activé");
 		$cmd->setValue($infoSwingmode->getId());
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
@@ -328,7 +328,7 @@ class innova extends eqLogic {
 		$cmd->setType('action');
 		$cmd->setSubType('select');
 		$cmd->setValue($infoSpeedfan->getId());
-		$cmd->setConfiguration('listValue', "Auto|Automatique;High|Rapide;Medium|Moyenne;Low|Lente");
+		$cmd->setConfiguration('listValue', "0|Automatique;3|Rapide;2|Moyenne;1|Lente");
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 
@@ -336,7 +336,7 @@ class innova extends eqLogic {
 		$cmd = $this->getCmd('action', 'setNightmode');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
-			$cmd->setName(__('Eco', __FILE__));
+			$cmd->setName(__('Mode Nuit', __FILE__));
 		}
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('setNightmode');
@@ -361,21 +361,6 @@ class innova extends eqLogic {
 		$cmd->setDisplay('forceReturnLineBefore', false);
 		$cmd->setDisplay('forceReturnLineAfter', true);
 		$cmd->save();*/
-
-		// activation des bips
-		$cmd = $this->getCmd('action', 'bipsOn');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Bips ON', __FILE__));
-		}         
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('bipsOn');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', true);
-		$cmd->save();
 
 		// à la fin, on contacte directement léquipement pour récupérer les infos courantes
 		//$this->updateInfos();
@@ -453,7 +438,10 @@ class innova extends eqLogic {
 		$extraData = "";
 		$baseUrl = "http://innovaenergie.cloud/api/v/1/";
 		if($variable == "target_temperature"){
-			//$extraData = "";
+			$extraData = "--data 'p_temp=".$state."'";
+		}
+		if($variable == "swing_mode"){
+			$extraData = "Content-Length=".$state."'";
 		}
 		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" '.$extraData.' -X POST '.$baseUrl.$param);
 		if ($json_string === false) {
@@ -471,71 +459,86 @@ class innova extends eqLogic {
 
 	public function eteindre() {
 		self::_sendCmdToAC("power/off","power_state",0);
-
 	}
 
-	public function setEcomode() {
-		self::_sendCmdToAC("--mode_eco 1");
-
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("eco_mode", 1);
-		$this->checkAndUpdateCmd("turbo_mode", 0);
+	public function ActiverModeNuit() {
+		//self::_sendCmdToAC("--mode_eco 1");
 	}
-
-	public function setTurbomode() {
-		self::_sendCmdToAC("--mode_turbo 1");
-
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("turbo_mode", 1);
-		$this->checkAndUpdateCmd("eco_mode", 0);
+	public function DesactiverModeNuit() {
+		//self::_sendCmdToAC("--mode_eco 1");
 	}
-
-	public function setNormalmode() {
-		self::_sendCmdToAC("--mode_normal 1");
-
-		// MAJ commandes infos associees
-		$this->checkAndUpdateCmd("turbo_mode", 0);
-		$this->checkAndUpdateCmd("eco_mode", 0);
-	}
-
 	public function setTemperature($consigne) {
-		if($consigne < 1 || $consigne > 35)
+		if($consigne < 16 || $consigne > 35)
 			return;
 
-		self::_sendCmdToAC("--target_temperature $consigne");
-
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("target_temperature", $consigne);
+		self::_sendCmdToAC("set/setpoint","target_temperature",$consigne);
 	}
 
-	public function setMode($mode = 'auto') {
-		if(!in_array($mode, ["auto", "cool", "dry", "heat", "fan_only"]))
+	public function setMode($mode = '0') {
+		if(!in_array($mode, ["0", "1", "2", "3", "4","5"]))
 			return;
-
-		self::_sendCmdToAC("--operational_mode $mode");
-
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("operational_mode", $mode);
+		switch($mode){
+			case '0': 
+			$modeName="heating";
+			break;
+				
+			case '1': 
+			$modeName="cooling";
+			break;
+				
+			case '2': 
+			break;
+				
+			case '3': 
+			$modeName="drying";
+			break;
+				
+			case '4': 
+			$modeName="fanonly";
+			break;
+				
+			case '5': 
+			$modeName="auto";
+			break;
+				
+			case default:
+			$modeName="heating";
+			break;
+		}
+		self::_sendCmdToAC("set/mode/".$modeName,"operational_mode",$mode);
 	}
 
 	public function setFanspeed($speed = "Auto") {
-		if(!in_array($speed, ["Auto", "High", "Medium", "Low"]))
+		if(!in_array($speed, ["0", "1", "2", "3"]))
 			return;
-		
+		switch($mode){
+			case '0': 
+			$modeName="Auto";
+			break;
+				
+			case '1': 
+			$modeName="High";
+			break;
+				
+			case '2': 
+			$modeName="Medium";
+			break;
+				
+			case '3': 
+			$modeName="Low";
+			break;
+		}
 		self::_sendCmdToAC("--fan_speed $speed");
 
 		// MAJ commande info associee
 		$this->checkAndUpdateCmd("fan_speed", $speed);
 	}
 
-	public function setSwingmode($swing = "Both") {
-		if(!in_array($swing, ["Off", "On"]))
+	public function setSwingmode($swing = "7") {
+		if(!in_array($swing, ["7", "0"]))
 			return;
 
-		self::_sendCmdToAC("--swing_mode $swing");
-
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("swing_mode", $swing);
+		self::_sendCmdToAC("set/feature/rotation","swing_mode",$swing);
 	}
 }
 

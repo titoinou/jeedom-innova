@@ -232,7 +232,7 @@ class innova extends eqLogic {
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();*/
 	
-	$cmd = $this->getCmd('action', 'on');
+		$cmd = $this->getCmd('action', 'on');
 		if (!is_object($cmd)) {
 		$cmd = new innovaCmd();
 		$cmd->setName(__('Allumer', __FILE__));
@@ -332,7 +332,7 @@ class innova extends eqLogic {
 		$cmd->save();
 
 		// Mise en route du mode Nuit
-		$cmd = $this->getCmd('action', 'setNightmode');
+		$cmd = $this->getCmd('action', 'enableNightmode');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Activer Mode Nuit', __FILE__));

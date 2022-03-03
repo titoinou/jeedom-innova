@@ -262,14 +262,13 @@ class innova extends eqLogic {
 		//$info->setDisplay('forceReturnLineBefore', true);
 		$info->setDisplay('forceReturnLineAfter', true);
 		$cmd->save();
-/*
+
 		// Changement température de consigne
 		$cmd = $this->getCmd('action', 'setTemperature');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Température de consigne', __FILE__));
 		}
-		$cmd->setOrder($order++);
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('setTemperature');
 		$cmd->setEqLogic_id($this->getId());
@@ -279,13 +278,8 @@ class innova extends eqLogic {
 		$cmd->setConfiguration('maxValue', 30);
 		$cmd->setUnite('°C');
 		$cmd->setValue($infoTemp->getId());
-		if(version_compare(jeedom::version(), "4", "<")) {
-			$cmd->setTemplate('dashboard', 'setTemperature');
-			$cmd->setTemplate('mobile', 'setTemperature');
-		} else {
-			$cmd->setTemplate('dashboard', 'mideawifi::setTemperature');
-			$cmd->setTemplate('mobile', 'mideawifi::setTemperature');
-		}
+		$cmd->setTemplate('dashboard', 'setTemperature');
+		$cmd->setTemplate('mobile', 'setTemperature');
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 
@@ -295,7 +289,6 @@ class innova extends eqLogic {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Mode', __FILE__));
 		}           
-		$cmd->setOrder($order++);
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('setMode');
 		$cmd->setEqLogic_id($this->getId());
@@ -303,7 +296,6 @@ class innova extends eqLogic {
 		$cmd->setSubType('select');
 		$cmd->setValue($infoMode->getId());
 		$cmd->setConfiguration('listValue', "auto|auto;cool|climatisation;dry|déshumidificateur;heat|Chauffage;fan_only|Ventilation");
-		$cmd->setTemplate('dashboard', 'mideawifi::tmplSelect');
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 
@@ -314,26 +306,13 @@ class innova extends eqLogic {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Type de ventilation', __FILE__));
 		}           
-		$cmd->setOrder($order++);
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('setSwingmode');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('select');
-		// MAJ de l'énumeration des orientations par rapport à la configuration choisie
-		$currentSwingmodes = $this->getConfiguration('swingmode');
-		log::add('mideawifi', 'debug', 'swingMode sélectionné = ' . $currentSwingmodes);
-		if($currentSwingmodes == "Vertical") {
-			$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical");
-		} elseif ($currentSwingmodes == "Horizontal") {
-			$cmd->setConfiguration('listValue', "Off|Eteint;Horizontal|Horizontal");
-		} else {
-			$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical;Horizontal|Horizontal;Both|Les deux");
-		}
-		// on met à jour la commande info avec la configuration (choix le plus logique) choisie
-		$this->checkAndUpdateCmd("swing_mode", $currentSwingmodes);
+		$cmd->setConfiguration('listValue', "Off|Eteint;Vertical|Vertical;Horizontal|Horizontal;Both|Les deux");
 		$cmd->setValue($infoSwingmode->getId());
-		$cmd->setTemplate('dashboard','mideawifi::tmplSelect');
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 
@@ -343,50 +322,32 @@ class innova extends eqLogic {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Vitesse de ventilation', __FILE__));
 		}         
-		$cmd->setOrder($order++);
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('setFanspeed');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('select');
 		$cmd->setValue($infoSpeedfan->getId());
-		$cmd->setConfiguration('listValue', "Auto|Automatique;High|Rapide;Medium|Moyenne;Low|Lente;Silent|Silencieuse");
-		$cmd->setTemplate('dashboard', 'mideawifi::tmplSelect');
+		$cmd->setConfiguration('listValue', "Auto|Automatique;High|Rapide;Medium|Moyenne;Low|Lente");
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 
-		// Mise en route du mode Eco
-		$cmd = $this->getCmd('action', 'setEcomode');
+		// Mise en route du mode Nuit
+		$cmd = $this->getCmd('action', 'setNightmode');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Eco', __FILE__));
 		}
-		$cmd->setOrder($order++);
 		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setEcomode');
+		$cmd->setLogicalId('setNightmode');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('other');
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 
-		// Mise en route du mode Turbo
-		$cmd = $this->getCmd('action', 'setTurbomode');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Turbo', __FILE__));
-		}
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setTurbomode');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', false);
-		$cmd->save();
-
 		// Désactivation des modes turbo/eco
-		$cmd = $this->getCmd('action', 'setNormalmode');
+		/*$cmd = $this->getCmd('action', 'setNormalmode');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
 			$cmd->setName(__('Normal', __FILE__));
@@ -399,7 +360,7 @@ class innova extends eqLogic {
 		$cmd->setSubType('other');
 		$cmd->setDisplay('forceReturnLineBefore', false);
 		$cmd->setDisplay('forceReturnLineAfter', true);
-		$cmd->save();
+		$cmd->save();*/
 
 		// activation des bips
 		$cmd = $this->getCmd('action', 'bipsOn');
@@ -416,34 +377,8 @@ class innova extends eqLogic {
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();
 
-		// Désactivation des bips
-		$cmd = $this->getCmd('action', 'bipsOff');
-		if (!is_object($cmd)) {
-			$cmd = new innovaCmd();
-			$cmd->setName(__('Bips OFF', __FILE__));
-		}         
-		$cmd->setOrder($order++);
-		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('bipsOff');
-		$cmd->setEqLogic_id($this->getId());
-		$cmd->setType('action');
-		$cmd->setSubType('other');
-		$cmd->setDisplay('forceReturnLineBefore', false);
-		$cmd->save();
-		// rafraichir
-		$refresh = $this->getCmd(null, 'refresh');
-		if (!is_object($refresh)) {
-			$refresh = new innovaCmd();
-			$refresh->setName(__('Rafraichir', __FILE__));
-		}
-		$refresh->setEqLogic_id($this->getId());
-		$refresh->setLogicalId('refresh');
-		$refresh->setType('action');
-		$refresh->setSubType('other');
-		$refresh->save();
-
-		// à la fin, on contact directement léquipement pour récupérer les infos courantes
-		//$this->updateInfos();*/
+		// à la fin, on contacte directement léquipement pour récupérer les infos courantes
+		//$this->updateInfos();
 	  }
 
 	  // Fonction exécutée automatiquement avant la suppression de l'équipement
@@ -584,7 +519,7 @@ class innova extends eqLogic {
 	}
 
 	public function setFanspeed($speed = "Auto") {
-		if(!in_array($speed, ["Auto", "High", "Medium", "Low", "Silent"]))
+		if(!in_array($speed, ["Auto", "High", "Medium", "Low"]))
 			return;
 		
 		self::_sendCmdToAC("--fan_speed $speed");
@@ -594,27 +529,13 @@ class innova extends eqLogic {
 	}
 
 	public function setSwingmode($swing = "Both") {
-		if(!in_array($swing, ["Off", "Vertical", "Horizontal", "Both"]))
+		if(!in_array($swing, ["Off", "On"]))
 			return;
 
 		self::_sendCmdToAC("--swing_mode $swing");
 
 		// MAJ commande info associee
 		$this->checkAndUpdateCmd("swing_mode", $swing);
-	}
-
-	public function bipsOn() {
-		self::_sendCmdToAC("--prompt_tone 1");
-		
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("prompt_tone", 1);
-	}
-
-	public function bipsOff() {
-		self::_sendCmdToAC("--prompt_tone 0");
-		
-		// MAJ commande info associee
-		$this->checkAndUpdateCmd("prompt_tone", 0);
 	}
 }
 

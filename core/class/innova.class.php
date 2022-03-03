@@ -146,11 +146,11 @@ class innova extends eqLogic {
 	$infoSpeedfan->setDisplay('forceReturnLineBefore', false);
 	$infoSpeedfan->save();
 
-	// Mode de ventilation
+	// Direction du flux
 	$infoSwingmode = $this->getCmd(null, 'swing_mode');
 	if (!is_object($infoSwingmode)) {
 		$infoSwingmode = new innovaCmd();
-		$infoSwingmode->setName(__('Direction', __FILE__));
+		$infoSwingmode->setName(__('Direction du flux', __FILE__));
 	}
 	$infoSwingmode->setLogicalId('swing_mode');
 	$infoSwingmode->setEqLogic_id($this->getId());

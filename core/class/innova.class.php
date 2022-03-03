@@ -436,10 +436,10 @@ class innova extends eqLogic {
 			$extraData = "--data 'p_temp=".$state."'";
 		}
 		if($variable == "swing_mode"){
-			$extraData = "value=".$state."'";
+			$extraData = "--data 'value=".$state."'";
 		}
 		if($variable == "fan_speed"){
-			$extraData = "value=".$state."'";
+			$extraData = "--data 'value=".$state."'";
 		}
 		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" '.$extraData.' -X POST '.$baseUrl.$param);
 		if ($json_string === false) {

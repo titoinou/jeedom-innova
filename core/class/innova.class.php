@@ -203,7 +203,7 @@ class innova extends eqLogic {
 		} else {
 		$infoMode->setTemplate('dashboard', 'mideawifi::displayModeInfo'); //template pour le dashboard
 		}*/
-		$infoMode->setSubType('string');
+		/*$infoMode->setSubType('string');
 		$infoMode->setIsVisible(0);
 		//$infoMode->setDisplay('generic_type', 'MODE_STATE');
 		$infoMode->setDisplay('forceReturnLineBefore', true);

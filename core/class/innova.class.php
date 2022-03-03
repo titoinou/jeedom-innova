@@ -509,8 +509,8 @@ $cmd = $this->getCmd('action', 'on');
 		$this->checkAndUpdateCmd("target_temperature", $infos["sp"]);
 		$this->checkAndUpdateCmd("operational_mode", $infos["wm"]);
 		$this->checkAndUpdateCmd("fan_speed", $infos["fs"]);
-		$this->checkAndUpdateCmd("swing_mode", $infos["swing_mode"]);
-		$this->checkAndUpdateCmd("night_mode", $infos["night_mode"]);
+		$this->checkAndUpdateCmd("swing_mode", $infos["fr"]);
+		$this->checkAndUpdateCmd("night_mode", $infos["nm"]);
 		$this->checkAndUpdateCmd("indoor_temperature", 	$infos["t"]);
 	}
 

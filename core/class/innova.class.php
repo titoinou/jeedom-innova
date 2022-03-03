@@ -39,7 +39,7 @@ class innova extends eqLogic {
   public static function cron() {
   	foreach (self::byType('innova') as $eqLogicInnova) {
 		if($eqLogicInnova->getIsEnable() == 0){
-			$eqLogicInnova->getInfos();
+			$eqLogicInnova->updateInfos();
 		}
 		log::add('mideawifi', 'debug', 'update clim ' . $eqLogicInnova->getName());
 	}
@@ -99,132 +99,115 @@ class innova extends eqLogic {
 
   // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
   public function postSave() {
-/*    $order = 1;
 
-		// ================================================================================================================= //
-		// ===================================================== INFOS ===================================================== //
-		// ================================================================================================================= //
+	// etat alimentation
+	$infoState = $this->getCmd(null, 'power_state');
+	if (!is_object($infoState)) {
+		$infoState = new innovaCmd();
+		$infoState->setName(__('Etat courant', __FILE__));
+	}
+	$infoState->setLogicalId('power_state');
+	$infoState->setEqLogic_id($this->getId());
+	$infoState->setType('info');
+	$infoState->setSubType('binary');
+	$infoState->setIsVisible(1);
+	$infoState->setIsHistorized(1);
+	$infoState->setDisplay('forceReturnLineBefore', false);
+	$infoState->save();
 
-		// etat alimentation
-		$infoState = $this->getCmd(null, 'power_state');
-		if (!is_object($infoState)) {
-			$infoState = new innovaCmd();
-			$infoState->setName(__('Etat courant', __FILE__));
-		}
-		$infoState->setOrder($order++);
-		$infoState->setLogicalId('power_state');
-		$infoState->setEqLogic_id($this->getId());
-		$infoState->setType('info');
+	// température désirée
+	$infoTemp = $this->getCmd(null, 'target_temperature');
+	if (!is_object($infoTemp)) {
+		$infoTemp = new innovaCmd();
+		$infoTemp->setName(__('Température désirée', __FILE__));
+	}
+	$infoTemp->setLogicalId('target_temperature');
+	$infoTemp->setEqLogic_id($this->getId());
+	$infoTemp->setType('info');
+	$infoTemp->setTemplate('dashboard', 'tile'); //template pour le dashboard
+	$infoTemp->setSubType('string');
+	$infoTemp->setIsVisible(0);
+	$infoTemp->setUnite('°C');
+	//$infoTemp->setDisplay('generic_type', 'TEMPERATURE');
+	$infoTemp->setDisplay('forceReturnLineBefore', false);
+	$infoTemp->save();
 
-		$infoState->setSubType('binary');
-		$infoState->setIsVisible(1);
-		$infoState->setIsHistorized(1);
-		$infoState->setDisplay('forceReturnLineBefore', false);
-		$infoState->save();
+	// vitesse ventilateur
+	$infoSpeedfan = $this->getCmd(null, 'fan_speed');
+	if (!is_object($infoSpeedfan)) {
+		$infoSpeedfan = new innovaCmd();
+		$infoSpeedfan->setName(__('Vitesse', __FILE__));
+	}
+	$infoSpeedfan->setLogicalId('fan_speed');
+	$infoSpeedfan->setEqLogic_id($this->getId());
+	$infoSpeedfan->setType('info');
+	$infoSpeedfan->setSubType('string');
+	$infoSpeedfan->setIsVisible(0);
+	$infoSpeedfan->setDisplay('forceReturnLineBefore', false);
+	$infoSpeedfan->save();
 
-		// température désirée
-		$infoTemp = $this->getCmd(null, 'target_temperature');
-		if (!is_object($infoTemp)) {
-			$infoTemp = new innovaCmd();
-			$infoTemp->setName(__('Température désirée', __FILE__));
-		}
-		$infoTemp->setOrder($order++);
-		$infoTemp->setLogicalId('target_temperature');
-		$infoTemp->setEqLogic_id($this->getId());
-		$infoTemp->setType('info');
-		$infoTemp->setTemplate('dashboard', 'tile'); //template pour le dashboard
-		$infoTemp->setSubType('string');
-		$infoTemp->setIsVisible(0);
-		$infoTemp->setUnite('°C');
-		//$infoTemp->setDisplay('generic_type', 'TEMPERATURE');
-		$infoTemp->setDisplay('forceReturnLineBefore', false);
-		$infoTemp->save();
+	// Mode de ventilation
+	$infoSwingmode = $this->getCmd(null, 'swing_mode');
+	if (!is_object($infoSwingmode)) {
+		$infoSwingmode = new innovaCmd();
+		$infoSwingmode->setName(__('Direction', __FILE__));
+	}
+	$infoSwingmode->setLogicalId('swing_mode');
+	$infoSwingmode->setEqLogic_id($this->getId());
+	$infoSwingmode->setType('info');
+	$infoSwingmode->setSubType('string');
+	$infoSwingmode->setIsVisible(0);
+	$infoSwingmode->setDisplay('forceReturnLineBefore', false);
+	$infoSwingmode->save();
 
-		// vitesse ventilateur
-		$infoSpeedfan = $this->getCmd(null, 'fan_speed');
-		if (!is_object($infoSpeedfan)) {
-			$infoSpeedfan = new innovaCmd();
-			$infoSpeedfan->setName(__('Vitesse', __FILE__));
-		}
-		$infoSpeedfan->setOrder($order++);
-		$infoSpeedfan->setLogicalId('fan_speed');
-		$infoSpeedfan->setEqLogic_id($this->getId());
-		$infoSpeedfan->setType('info');
-		$infoSpeedfan->setSubType('string');
-		$infoSpeedfan->setIsVisible(0);
-      	$infoSpeedfan->setDisplay('forceReturnLineBefore', false);
-		$infoSpeedfan->save();
+	// Mode Nuit
+	$info = $this->getCmd(null, 'night_mode');
+	if (!is_object($info)) {
+		$info = new innovaCmd();
+		$info->setName(__('Mode éco', __FILE__));
+	}
+	$info->setLogicalId('night_mode');
+	$info->setEqLogic_id($this->getId());
+	$info->setType('info');
+	$info->setTemplate('dashboard', 'default'); //template pour le dashboard
+	$info->setSubType('binary');
+	$info->setIsVisible(1);
+	$info->setIsHistorized(0);
+	$info->setDisplay('forceReturnLineBefore', false);
+	$info->save();
 
-		// Mode de ventilation
-		$infoSwingmode = $this->getCmd(null, 'swing_mode');
-		if (!is_object($infoSwingmode)) {
-			$infoSwingmode = new innovaCmd();
-			$infoSwingmode->setName(__('Direction', __FILE__));
-		}
-		$infoSwingmode->setOrder($order++);
-		$infoSwingmode->setLogicalId('swing_mode');
-		$infoSwingmode->setEqLogic_id($this->getId());
-		$infoSwingmode->setType('info');
-		$infoSwingmode->setSubType('string');
-		$infoSwingmode->setIsVisible(0);
-      		$infoSwingmode->setDisplay('forceReturnLineBefore', false);
-		$infoSwingmode->save();
+	// mode opérationnel
+	$infoMode = $this->getCmd(null, 'operational_mode');
+	if (!is_object($infoMode)) {
+		$infoMode = new innovaCmd();
+		$infoMode->setName(__('Mode courant', __FILE__));
+	}
+	$infoMode->setLogicalId('operational_mode');
+	$infoMode->setEqLogic_id($this->getId());
+	$infoMode->setType('info');
+	$infoMode->setSubType('string');
+	$infoMode->setIsVisible(0);
+	//$infoMode->setDisplay('generic_type', 'MODE_STATE');
+	$infoMode->setDisplay('forceReturnLineBefore', true);
+	$infoMode->save();
 
-		// Mode Nuit
-		$info = $this->getCmd(null, 'night_mode');
-		if (!is_object($info)) {
-			$info = new innovaCmd();
-			$info->setName(__('Mode éco', __FILE__));
-		}
-		$info->setOrder($order++);
-		$info->setLogicalId('eco_mode');
-		$info->setEqLogic_id($this->getId());
-		$info->setType('info');
-		$info->setTemplate('dashboard', 'default'); //template pour le dashboard
-		$info->setSubType('binary');
-		$info->setIsVisible(1);
-		$info->setIsHistorized(0);
-		$info->setDisplay('forceReturnLineBefore', false);
-		$info->save();
-
-		// mode opérationnel
-		$infoMode = $this->getCmd(null, 'operational_mode');
-		if (!is_object($infoMode)) {
-			$infoMode = new innovaCmd();
-			$infoMode->setName(__('Mode courant', __FILE__));
-		}
-		$infoMode->setOrder($order++);
-		$infoMode->setLogicalId('operational_mode');
-		$infoMode->setEqLogic_id($this->getId());
-		$infoMode->setType('info');
-		/*if ( version_compare(jeedom::version(), "4", "<") ) {
-		$infoMode->setTemplate('dashboard', 'displayModeInfo'); //template pour le dashboard en v3
-		} else {
-		$infoMode->setTemplate('dashboard', 'mideawifi::displayModeInfo'); //template pour le dashboard
-		}*/
-		/*$infoMode->setSubType('string');
-		$infoMode->setIsVisible(0);
-		//$infoMode->setDisplay('generic_type', 'MODE_STATE');
-		$infoMode->setDisplay('forceReturnLineBefore', true);
-		$infoMode->save();
-
-		// température intérieure
-		$info = $this->getCmd(null, 'indoor_temperature');
-		if (!is_object($info)) {
-			$info = new innovaCmd();
-			$info->setName(__('Température intérieure', __FILE__));
-		}
-		$info->setOrder($order++);
-		$info->setLogicalId('indoor_temperature');
-		$info->setEqLogic_id($this->getId());
-		$info->setType('info');
-		$info->setTemplate('dashboard', 'default'); //template pour le dashboard
-		$info->setSubType('string');
-		$info->setIsVisible(1);
-		$info->setIsHistorized(1);
-		$info->setUnite('°C');
-		$info->setDisplay('forceReturnLineBefore', true);
-		$info->save();
+	// température intérieure
+	$info = $this->getCmd(null, 'indoor_temperature');
+	if (!is_object($info)) {
+		$info = new innovaCmd();
+		$info->setName(__('Température intérieure', __FILE__));
+	}
+	$info->setOrder($order++);
+	$info->setLogicalId('indoor_temperature');
+	$info->setEqLogic_id($this->getId());
+	$info->setType('info');
+	$info->setTemplate('dashboard', 'default'); //template pour le dashboard
+	$info->setSubType('string');
+	$info->setIsVisible(1);
+	$info->setIsHistorized(1);
+	$info->setUnite('°C');
+	$info->setDisplay('forceReturnLineBefore', true);
+	$info->save();
 */
 		// ================================================================================================================= //
 		// ==================================================== ACTIONS ==================================================== //
@@ -512,25 +495,24 @@ class innova extends eqLogic {
             return;
         }
     	log::add('innova', 'debug', $json_string);
-        return json_decode($json_string, true);
+        $infos = json_decode($json_string, true);
+	return $infos['RESULT'];
 	}
 
 	public function updateInfos() {
 		$infos = self::getInfos();
-		log::add('innova', 'debug', $infos["sp"]);
+		log::add('innova', 'debug', $infos);
 		//self::_updateInfos($infos);
 	}
 
 	private function _updateInfos($infos) {
-		$this->checkAndUpdateCmd("power_state", $infos["power_state"]);
-		$this->checkAndUpdateCmd("power_tone", 	$infos["power_tone"]);
-		$this->checkAndUpdateCmd("target_temperature", $infos["target_temperature"]);
-		$this->checkAndUpdateCmd("operational_mode", $infos["operational_mode"]);
-		$this->checkAndUpdateCmd("fan_speed", $infos["fan_speed"]);
+		$this->checkAndUpdateCmd("power_state", $infos["ps"]);
+		$this->checkAndUpdateCmd("target_temperature", $infos["sp"]);
+		$this->checkAndUpdateCmd("operational_mode", $infos["wm"]);
+		$this->checkAndUpdateCmd("fan_speed", $infos["fs"]);
 		$this->checkAndUpdateCmd("swing_mode", $infos["swing_mode"]);
-		$this->checkAndUpdateCmd("eco_mode", $infos["night_mode"]);
-		$this->checkAndUpdateCmd("indoor_temperature", 	$infos["indoor_temperature"]);
-		$this->checkAndUpdateCmd("outdoor_temperature", $infos["outdoor_temperature"]); 
+		$this->checkAndUpdateCmd("night_mode", $infos["night_mode"]);
+		$this->checkAndUpdateCmd("indoor_temperature", 	$infos["t"]);
 	}
 
 	private function _sendCmdToAC($params) {

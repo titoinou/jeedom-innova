@@ -100,7 +100,7 @@ class innova extends eqLogic {
 
   // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
   public function postSave() {
-    $order = 1;
+/*    $order = 1;
 
 		// ================================================================================================================= //
 		// ===================================================== INFOS ===================================================== //
@@ -140,7 +140,6 @@ class innova extends eqLogic {
 		//$infoTemp->setDisplay('generic_type', 'TEMPERATURE');
 		$infoTemp->setDisplay('forceReturnLineBefore', false);
 		$infoTemp->save();
-
 
 		// vitesse ventilateur
 		$infoSpeedfan = $this->getCmd(null, 'fan_speed');
@@ -227,7 +226,7 @@ class innova extends eqLogic {
 		$info->setUnite('°C');
 		$info->setDisplay('forceReturnLineBefore', true);
 		$info->save();
-
+*/
 		// ================================================================================================================= //
 		// ==================================================== ACTIONS ==================================================== //
 		// ================================================================================================================= //
@@ -250,7 +249,7 @@ class innova extends eqLogic {
 		$cmd->setTemplate('dashboard', 'mideawifi::powerState'); //template pour le dashboard
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();*/
-
+/*
       	$cmd = $this->getCmd('action', 'on');
 		if (!is_object($cmd)) {
 		$cmd = new innovaCmd();
@@ -464,7 +463,7 @@ class innova extends eqLogic {
 		$refresh->save();
 
 		// à la fin, on contact directement léquipement pour récupérer les infos courantes
-		//$this->updateInfos();
+		//$this->updateInfos();*/
   }
 
   // Fonction exécutée automatiquement avant la suppression de l'équipement

@@ -501,8 +501,7 @@ $cmd = $this->getCmd('action', 'on');
 
 	public function updateInfos() {
 		$infos = self::getInfos();
-		log::add('innova', 'debug', $infos);
-		//self::_updateInfos($infos);
+		self::_updateInfos($infos);
 	}
 
 	private function _updateInfos($infos) {

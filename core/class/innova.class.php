@@ -644,20 +644,14 @@ class innovaCmd extends cmd {
 		case 'refresh': 
 			$eqLogic->updateInfos();
 			break;
-		/*case 'setPowerState':
-			$eqLogic->setPowerState($_options['state']);
-			break;*/
 		case 'on':
 			$eqLogic->allumer();
 			break;
 		case 'off':
 			$eqLogic->eteindre();
 			break;
-		case 'setEcomode':
-			$eqLogic->setEcomode();
-			break;
-		case 'setTurbomode':
-			$eqLogic->setTurbomode();
+		case 'setNightmode':
+			$eqLogic->setNightmode();
 			break;
 		case 'setNormalmode':
 			$eqLogic->setNormalmode();
@@ -674,16 +668,10 @@ class innovaCmd extends cmd {
 			break;
 		case 'setSwingmode':
 			$eqLogic->setSwingmode($_options['select']);
-			break;
-		case 'bipsOn':
-			$eqLogic->bipsOn();
-			break;
-		case 'bipsOff':
-			$eqLogic->bipsOff();
-			break;          
+			break;       
 		default:
 			throw new Error('This should not append!');
-			log::add('mideawifi', 'warn', 'Error while executing cmd ' . $this->getLogicalId());
+			log::add('innova', 'warn', 'Erreur execution commande ' . $this->getLogicalId());
 			break;
 	}
   }

@@ -237,7 +237,6 @@ class innova extends eqLogic {
 		$cmd = new innovaCmd();
 		$cmd->setName(__('Allumer', __FILE__));
 		}
-		$cmd->setOrder($order++);
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('on');
 		$cmd->setEqLogic_id($this->getId());
@@ -254,7 +253,6 @@ class innova extends eqLogic {
 		$cmd = new innovaCmd();
 		$cmd->setName(__('Eteindre', __FILE__));
 		}
-		$cmd->setOrder($order++);
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('off');
 		$cmd->setEqLogic_id($this->getId());

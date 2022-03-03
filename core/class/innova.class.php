@@ -506,7 +506,7 @@ class innova extends eqLogic {
 	$serial = $this->getConfiguration('serial');
 	$id = $this->getConfiguration('id');
 	$uid = $this->getConfiguration('uid');
-	$json_string = shell_exec('curl -X POST -H "X-serial:" .$serial -H "X-UID:" .$uid -H "X-Requested-With: XMLHttpRequest" -X POST http://innovaenergie.cloud/api/v/1/status');
+	$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" -X POST http://innovaenergie.cloud/api/v/1/status');
         if ($json_string === false) {
             log::add('innova', 'debug', 'Problème de lecture status');
             $request_http->setNoReportError(false);

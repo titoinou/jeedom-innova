@@ -42,6 +42,7 @@ class innova extends eqLogic {
 				$eqLogicInnova->updateInfos();
 			}
 			log::add('mideawifi', 'debug', 'update clim ' . $eqLogicInnova->getName());
+			throw new Exception('{{test}}');
 		}
 	  }
 

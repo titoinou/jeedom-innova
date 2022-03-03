@@ -511,12 +511,16 @@ class innova extends eqLogic {
 		$this->checkAndUpdateCmd("indoor_temperature", 	$infos["t"]);
 	}
 
-	private function _sendCmdToAC($params,$variable,$state) {
+	private function _sendCmdToAC($param,$variable,$state) {
 		$infos = self::getInfos();
 		$serial = $this->getConfiguration('serial');
 		$uid = $this->getConfiguration('uid');
+		$extraData = "";
 		$baseUrl = "http://innovaenergie.cloud/api/v/1/";
-		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" -X POST '.$baseUrl.$param);
+		if($variable == "target_temperature"){
+			//$extraData = "";
+		}
+		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" '.$extraData.' -X POST '.$baseUrl.$param);
 		if ($json_string === false) {
 		    log::add('innova', 'debug', 'Problème d\'envoi de la commande');
 		    return;

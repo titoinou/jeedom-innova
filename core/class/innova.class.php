@@ -38,7 +38,7 @@ class innova extends eqLogic {
   //Fonction exécutée automatiquement toutes les minutes par Jeedom
   public static function cron() {
   	foreach (self::byType('innova') as $eqLogicInnova) {
-		if($eqLogicInnova->getIsEnable() == 0){
+		if($eqLogicInnova->getIsEnable() == 1){
 			$eqLogicInnova->updateInfos();
 		}
 		log::add('mideawifi', 'debug', 'update clim ' . $eqLogicInnova->getName());

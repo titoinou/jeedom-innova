@@ -473,37 +473,10 @@ class innova extends eqLogic {
 	}
 
 	public function setMode($mode = 0) {
-		if(!in_array($mode, [0, 1, 2, 3, 4,5]))
+		if(!in_array($mode, ["heating", "cooling", "dehumidification", "fanonly", "auto"]))
 			return;
-		switch($mode){
-			case 0: 
-			$modeName="heating";
-			break;
-				
-			case 1: 
-			$modeName="cooling";
-			break;
-				
-			case 2: 
-			break;
-				
-			case 3: 
-			$modeName="drying";
-			break;
-				
-			case 4: 
-			$modeName="fanonly";
-			break;
-				
-			case 5: 
-			$modeName="auto";
-			break;
-				
-			default:
-			$modeName="heating";
-			break;
-		}
-		self::_sendCmdToAC("set/mode/".$modeName,"operational_mode",$mode);
+
+		self::_sendCmdToAC("set/mode/".$mode,"operational_mode",$mode);
 	}
 
 	public function setFanspeed($speed = 0) {

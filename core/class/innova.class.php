@@ -164,7 +164,7 @@ class innova extends eqLogic {
 	$info = $this->getCmd(null, 'night_mode');
 	if (!is_object($info)) {
 		$info = new innovaCmd();
-		$info->setName(__('Mode éco', __FILE__));
+		$info->setName(__('Mode nuit', __FILE__));
 	}
 	$info->setLogicalId('night_mode');
 	$info->setEqLogic_id($this->getId());

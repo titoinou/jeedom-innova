@@ -506,31 +506,36 @@ class innova extends eqLogic {
 		self::_sendCmdToAC("set/mode/".$modeName,"operational_mode",$mode);
 	}
 
-	public function setFanspeed($speed = "Auto") {
-		if(!in_array($speed, ["0", "1", "2", "3"]))
+	public function setFanspeed($speed = 0) {
+		if(!in_array($speed, [0, 1, 2, 3]))
 			return;
-		switch($mode){
-			case '0': 
+		
+		/*switch($mode){
+			case 0: 
 			$modeName="Auto";
 			break;
 				
-			case '1': 
+			case 1: 
 			$modeName="High";
 			break;
 				
-			case '2': 
+			case 2: 
 			$modeName="Medium";
 			break;
 				
-			case '3': 
+			case 3: 
 			$modeName="Low";
 			break;
-		}
+				
+			default:
+			$modeName="Auto";
+			break;
+		}*/
 		self::_sendCmdToAC("set/fan","fan_speed",$speed);
 	}
 
-	public function setSwingmode($swing = "7") {
-		if(!in_array($swing, ["7", "0"]))
+	public function setSwingmode($swing = 7) {
+		if(!in_array($swing, [7, 0]))
 			return;
 
 		self::_sendCmdToAC("set/feature/rotation","swing_mode",$swing);

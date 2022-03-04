@@ -6,27 +6,27 @@
 		<span style="font-size: 2.5em; font-weight: bold; margin-top: 5px;" class="imgCmd"></span>
 	</center>
 	<script>
-	if('#name#' == 'auto'){
-		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/easycontrol/core/template/images/icon_heating.png" width="40px">');
+	if('#name#' == 'setSwingmodeOn'){
+		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/easycontrol/core/template/images/icon_flaprotation_0.png" width="40px">');
 	}else{
-		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/easycontrol/core/template/images/icon_heating_bot.png" width="40px">');
+		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/easycontrol/core/template/images/icon_flaprotation_7.png" width="40px">');
 	}
 	
-	/*jeedom.cmd.update['#id#'] = function(_options){
-		if('#name#' == 'Mode horloge'){
-		  if(_options.display_value == 'Mode manuel' ) {
+	jeedom.cmd.update['#id#'] = function(_options){
+		if('#name#' == 'setSwingmodeOn'){
+		  if(_options.display_value == 'setSwingmodeOff' ) {
 			  $('.cmd[data-cmd_uid=#uid#]').show();
 		  }else{
 			  $('.cmd[data-cmd_uid=#uid#]').hide();
 		  }
 		}else{
-		  if(_options.display_value == 'Mode horloge' ) {
+		  if(_options.display_value == 'setSwingmodeOn' ) {
 				$('.cmd[data-cmd_uid=#uid#]').show();
 			}else{
 				$('.cmd[data-cmd_uid=#uid#]').hide();
 			}
 		}
-	}*/
+	}
 	jeedom.cmd.update['#id#']({display_value:'#state#'});
 	$('.cmd[data-cmd_uid=#uid#] .imgCmd').on('click', function () {
 		jeedom.cmd.execute({id: '#id#'});

@@ -308,7 +308,7 @@ class innova extends eqLogic {
 		$cmd->setTemplate('dashboard', 'swingmode');
                 $cmd->setTemplate('mobile', 'swingmode');
 		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setSwingmode');
+		$cmd->setLogicalId('setSwingmodeOn');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('other');
@@ -325,7 +325,7 @@ class innova extends eqLogic {
 		$cmd->setTemplate('dashboard', 'swingmode');
                 $cmd->setTemplate('mobile', 'swingmode');  
 		$cmd->setIsVisible(1);
-		$cmd->setLogicalId('setSwingmode');
+		$cmd->setLogicalId('setSwingmodeOff');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
 		$cmd->setSubType('other');

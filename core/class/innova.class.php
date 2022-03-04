@@ -300,17 +300,36 @@ class innova extends eqLogic {
 		$cmd->save();
 
 		// Changement de l'orientation de la ventilation
-		$cmd = $this->getCmd('action', 'setSwingmode');
+		$cmd = $this->getCmd('action', 'setSwingmodeOn');
 		if (!is_object($cmd)) {
 			$cmd = new innovaCmd();
-			$cmd->setName(__('Type de ventilation', __FILE__));
+			$cmd->setName(__('Activer Rotation', __FILE__));
 		}           
+		$cmd->setTemplate('dashboard', 'swingmode');
+                $cmd->setTemplate('mobile', 'swingmode');
 		$cmd->setIsVisible(1);
 		$cmd->setLogicalId('setSwingmode');
 		$cmd->setEqLogic_id($this->getId());
 		$cmd->setType('action');
-		$cmd->setSubType('select');
-		$cmd->setConfiguration('listValue', "7|Désactivé;0|Activé");
+		$cmd->setSubType('other');
+		//$cmd->setConfiguration('listValue', "7|Désactivé;0|Activé");
+		$cmd->setValue($infoSwingmode->getId());
+		$cmd->setDisplay('forceReturnLineBefore', true);
+		$cmd->save();
+		  
+	  	$cmd = $this->getCmd('action', 'setSwingmodeOff');
+		if (!is_object($cmd)) {
+			$cmd = new innovaCmd();
+			$cmd->setName(__('Désactiver Rotation', __FILE__));
+		}          
+		$cmd->setTemplate('dashboard', 'swingmode');
+                $cmd->setTemplate('mobile', 'swingmode');  
+		$cmd->setIsVisible(1);
+		$cmd->setLogicalId('setSwingmode');
+		$cmd->setEqLogic_id($this->getId());
+		$cmd->setType('action');
+		$cmd->setSubType('other');
+		//$cmd->setConfiguration('listValue', "7|Désactivé;0|Activé");
 		$cmd->setValue($infoSwingmode->getId());
 		$cmd->setDisplay('forceReturnLineBefore', true);
 		$cmd->save();

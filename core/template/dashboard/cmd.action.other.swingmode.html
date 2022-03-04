@@ -1,5 +1,3 @@
-<!--		$cmd->setConfiguration('listValue', "auto|auto;cooling|climatisation;dehumidification|déshumidificateur;heating|Chauffage;fanonly|Ventilation");
--->
 <div style="width:90px; min-height:80px;" class="cmd tooltips cmd-widget cursor" data-type="action" data-subtype="other" data-cmd_id="#id#" data-cmd_uid="#uid#">
 	<center>
 		<span class="cmdName" style="font-weight: bold;font-size : 12px;#hideCmdName#;margin-bottom:3px;display:inline-block">#valueName#</span><br>
@@ -7,9 +5,9 @@
 	</center>
 	<script>
 	if('#name#' == 'setSwingmodeOn'){
-		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/innova/core/template/images/icon_flaprotation_0.png" width="40px">');
+		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/innova/core/template/image/icon_flaprotation_0.png" width="40px">');
 	}else{
-		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/innova/core/template/images/icon_flaprotation_7.png" width="40px">');
+		$('.cmd[data-cmd_uid=#uid#] .imgCmd').append('<img src="plugins/innova/core/template/image/icon_flaprotation_7.png" width="40px">');
 	}
 	
 	jeedom.cmd.update['#id#'] = function(_options){

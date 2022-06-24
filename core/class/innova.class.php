@@ -450,7 +450,7 @@ class innova extends eqLogic {
 		$serial = $this->getConfiguration('serial');
 		$uid = $this->getConfiguration('uid');
 		$extraData = "";
-		$*l = "http://innovaenergie.cloud/api/v/1/";
+		$baseUrl = "http://innovaenergie.cloud/api/v/1/";
 		if($variable == "target_temperature"){
 			$extraData = "--data 'p_temp=".$state."'";
 		}

@@ -420,7 +420,7 @@ class innova extends eqLogic {
 	  public function getInfos() {
 		$serial = $this->getConfiguration('serial');
 		$uid = $this->getConfiguration('uid');
-		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" -X POST http://innovaenergie.cloud/api/v/1/status');
+		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.strtolower($uid).' -H "X-Requested-With: XMLHttpRequest" -X POST http://innovaenergie.cloud/api/v/1/status');
 		if ($json_string === false) {
 		    log::add('innova', 'debug', 'Problème de lecture status');
 		    return;
@@ -450,7 +450,7 @@ class innova extends eqLogic {
 		$serial = $this->getConfiguration('serial');
 		$uid = $this->getConfiguration('uid');
 		$extraData = "";
-		$baseUrl = "http://innovaenergie.cloud/api/v/1/";
+		$*l = "http://innovaenergie.cloud/api/v/1/";
 		if($variable == "target_temperature"){
 			$extraData = "--data 'p_temp=".$state."'";
 		}
@@ -460,7 +460,7 @@ class innova extends eqLogic {
 		if($variable == "fan_speed"){
 			$extraData = "--data 'value=".$state."'";
 		}
-		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.$uid.' -H "X-Requested-With: XMLHttpRequest" '.$extraData.' -X POST '.$baseUrl.$param);
+		$json_string = shell_exec('curl -X POST -H "X-serial: "'.$serial.' -H "X-UID: "'.strtolower($uid).' -H "X-Requested-With: XMLHttpRequest" '.$extraData.' -X POST '.$baseUrl.$param);
 		if ($json_string === false) {
 		    log::add('innova', 'debug', 'Problème d\'envoi de la commande');
 		    return;
